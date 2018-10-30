@@ -1,0 +1,52 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ul {
+    list-style: none;
+}
+
+body {
+    background: #444;
+}
+
+h1 {
+    background: yellow;
+}
+
+#to-do-list, #to-do-list-2 {
+    background: white;
+    position: relative;
+    max-width: 400px;
+    height: 550px;
+    margin: auto;
+    padding: 24px;
+}
+
+.task-detail {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+}
+
+.task-detail > div {
+    flex: 1;
+    margin-left: 12px;
+}
+
+.add-cta {
+    background: green;
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    width: 64px;
+    height: 64px;
+    border: none;
+    border-radius: 50%;
+
+    font-size: 42px;
+    color: white;
+    cursor: pointer;
+}
