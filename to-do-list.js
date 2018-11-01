@@ -1,13 +1,13 @@
-const data = [
+data = [
     { title: 'Task 1', piority: 3 },
     { title: 'Task 2', piority: 3 },
     { title: 'Task 3', piority: 3 }
-]
-
+];
 
 class ToDoList {
-    constructor (id) {
+    constructor (id, data = []) {
         this.id = id;
+        this.data = data;
         this.el = document.getElementById(id);
         this.el.innerHTML = this.constructor.template;
         this.el.classList.add('list-content');
@@ -20,7 +20,8 @@ class ToDoList {
             .addEventListener('click', this.handleCreateTask.bind(this));
         this.el.addEventListener('click', (e) => {
             if (e.target.matches('li *')) {
-                const listEl = e.target.closest('li')
+                const listEl = e.target.closest('li');
+                console.log(listEl);
                 const index = parseInt(listEl.dataset.index)
                 if (e.target.matches('.delete-task')) {
                     console.log('delete task', index)
@@ -28,11 +29,12 @@ class ToDoList {
                 }
             }
         })
+        listRender();
     }
 
     removeTask(index) {
-        data.splice(index, 1)
-        listRender()
+        this.data.splice(index, 1)
+        this.render()
     }
     handleTaskInput (e) {
         e.preventDefault();
@@ -74,15 +76,20 @@ ToDoList.template = `
         <button class="add-cta">+</button>
     </div>
 `
-new ToDoList('to-do-list');
+new ToDoList('to-do-list', [
+    { title: 'Task 1', piority: 3 },
+    { title: 'Task 2', piority: 3 },
+    { title: 'Task 3', piority: 3 }
+]);
 
-const list = document.getElementsByClassName('task-list')[0];
+
 function listRender() {
+    const list = document.getElementsByClassName('task-list')[0];
     while(list.firstChild) list.removeChild(list.firstChild);
     return (
         data.map((item, index) => {
             const $item = document.createElement('li');
-            $item.dataset.index = index
+            $item.dataset.indexMeo = index
             $item.innerHTML = `
                 <input type="checkbox" name="task-done">
                 <div>${item.title}</div>
@@ -168,4 +175,4 @@ function listRender() {
 }
 
 
-listRender()
+listRender();
