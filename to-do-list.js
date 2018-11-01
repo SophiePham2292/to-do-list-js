@@ -18,7 +18,7 @@ class ToDoList {
     handleTaskInput (e) {
         e.preventDefault();
         const taskContent = this.el.getElementsByClassName('task-input')[0].value;
-        data.push({
+        data.unshift({
             title: taskContent,
             done: false,
             piority: 3
@@ -79,19 +79,12 @@ function listRender() {
                 case 2:
                     $item.getElementsByTagName('option')[1].setAttribute('selected', 'true');
                     break;
+                case 4: 
+                    $item.getElementsByTagName("div")[0].style.textDecoration= "line-through";
+                    break;
                 default:
                     $item.getElementsByTagName('option')[0].setAttribute('selected', 'true')
             }
-
-           /*  if(data[index].piority === 1) {
-                $item.getElementsByTagName('option')[2].setAttribute('selected', 'true')
-            }
-            if(data[index].piority === 2) {
-                $item.getElementsByTagName('option')[1].setAttribute('selected', 'true')
-            }
-            if(data[index].piority === 3) {
-                $item.getElementsByTagName('option')[0].setAttribute('selected', 'true')
-            } */
 
             list.appendChild($item);
 
@@ -126,6 +119,23 @@ function listRender() {
                     data.sort(comparePiority);
 
                     listRender();
+            })
+
+            $item.getElementsByTagName("input")[0].addEventListener("change", function(e){
+
+                data[index].piority = 4;
+
+                function comparePiority(item1, item2) {
+                    if(item1.piority > item2.piority){                    
+                        return 1;
+                    } else if (item1.piority < item2.piority){
+                        return -1;
+                    }
+                    return 0;
+                }
+                data.sort(comparePiority);
+
+                listRender();
             })
 
         }))
