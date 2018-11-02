@@ -1,12 +1,40 @@
+/*-----------------------------------------------
+
+    Table of content 
+        1. Data storage
+        2. Classes
+        3. Class static template variable
+        4. DOM Objects creation
+
+ -----------------------------------------------*/
+
+
+/*---------------------
+    Data storage
+ ---------------------*/
 
 const priorities = [
     { label: 'High', value: 1 },
     { label: 'Medium', value: 2 },
     { label: 'Low', value: 3 },
     { label: 'Done', value: 4 }
-
 ]
+
+var days = ["Sunday", "Monday", "Tuesday", 
+    "Wednesday", "Thursday", "Friday", "Saturday"];
+var months = ["January", "February", "March", 
+    "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+
+
+/*---------------------
+    Classes
+ ---------------------*/
+
 class ToDoList {
+
+    //  CONSTRUCTOR
+
     constructor(id, data) {
         this.id = id;
         this.data = data;
@@ -24,18 +52,21 @@ class ToDoList {
             if(e.target.matches('.cancel-button')) this.handleCancelTask(e);
             if(e.target.matches('.delete-task')) this.handleDeleteTask(e);
             if(e.target.matches('#done-task')) this.handleTaskDone(e);
+            if(e.target.matches('.subject-button'))this.handleInputSubject(e);
         })
 
         this.el.addEventListener('change', e => {
             e.preventDefault();
-            console.log(e.target)
             if(e.target.matches('#task-piority')) this.handleChangePiotiry(e);
-            if(e.target.matches('#done-task')) console.log(e.target) //this.handleTaskDone(e);
+            if(e.target.matches('#done-task')) this.handleTaskDone(e);
+            
         })
 
         this.render();
 
     }
+
+    // METHODS
 
     handleCreateTask() {
         const addTask = document.createElement('div');
@@ -91,6 +122,20 @@ class ToDoList {
         
     }
 
+    handleInputSubject(e){
+        e.preventDefault();
+        const subjectH3Text = this.el.querySelector('.subject-input').value;
+        const subjectH3El = document.createElement('h3');
+        subjectH3El.innerText = subjectH3Text;
+        const subjectDiv = e.target.parentElement;
+        while (subjectDiv.firstChild) {
+            subjectDiv.removeChild(subjectDiv.firstChild)
+        };
+        subjectDiv.appendChild(subjectH3El);
+    }
+
+    // RENDER
+
     render() {
         const taskList = this.el.getElementsByClassName('task-list')[0];
         while(taskList.firstChild) taskList.removeChild(taskList.firstChild);
@@ -99,7 +144,7 @@ class ToDoList {
             // Use list item data to create <li> elements
             const listItem = document.createElement('li');
             listItem.innerHTML = `
-                <input id='done-task' type="checkbox" name="task-done" value='done'>
+                <input id='done-task' type="checkbox" name="task-done" value='done'/>
                 <div>${listObject.title}</div>
                 <select name="task-piority" id="task-piority"></select>
                 <button class='delete-task'>Delete</button>
@@ -117,6 +162,7 @@ class ToDoList {
                 select.append(opt)
             })
             if(listObject.piority === 4) {
+                listItem.getElementsByTagName('input')[0].setAttribute('checked', 'true')
                 listItem.getElementsByTagName('div')[0].style.textDecoration = 'line-through';
             }
 
@@ -127,26 +173,47 @@ class ToDoList {
     }
 }
 
+/*---------------------
+    Static class 
+    template variable
+ ---------------------*/
+
 
 ToDoList.template = `
-    <h1>To do list</h1>
+    <div class="list-heading">
+        <h3>${(new Date).getDate()}</h3>
+        <p>${months[(new Date).getMonth()]} </br>
+            <span>${days[(new Date).getDay()]}</span>
+        </p>  
+        <button class="add-cta">+</button>
+    </div>
+    
     <div class="list-content">
+        <div class='list-subject'>
+            <input type='text' class='subject-input' placeholder="Subject title"></input>
+            <button class='subject-button'>Yes!</button>
+        </div>
         <form class="task-content">
             <ul class="task-list">
             </ul>
         </form>
         <form class="task-add"> 
         </form>
-        <button class="add-cta">+</button>
+        
     </div>
 `
 
+
+/*-------------------------
+    DOM object creation 
+ --------------------------*/
+
 const todo = new ToDoList('to-do-list', [
-    { title: 'Task 1', piority: 1 },
-    { title: 'Task 2', piority: 1 },
-    { title: 'Task 3', piority: 1 },
-    { title: 'Task 4', piority: 1 },
-    { title: 'Task 5', piority: 1 },
+    { title: 'JS Array', piority: 1 },
+    { title: 'JS Date', piority: 1 },
+    { title: 'JS String', piority: 1 },
+    { title: 'HTML DOM elements', piority: 1 },
+    { title: 'HTML DOM events', piority: 1 },
     { title: 'Task 6', piority: 1 }
 ]);
 
